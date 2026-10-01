@@ -1,0 +1,16 @@
+#Ambientes virtuais
+venv/
+env/
+__pycache__/
+
+#Banco de dados local
+db.sqlite3
+
+#Arquivos do sistema (Windows)
+.DS_Store
+Thumbs.db
+
+#Configurações do Vagrant
+.vagrant/
+
+
