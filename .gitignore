@@ -13,4 +13,4 @@ Thumbs.db
 #Configurações do Vagrant
 .vagrant/
 
-
+credenciais.txt

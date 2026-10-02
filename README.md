@@ -33,17 +33,27 @@ git clone https://github.com/joao-vitor01/UniFood-SD.git
 
     vagrant ssh
 
-### 4. Inicie o servidor:
+### 4. Preparar o ambiente e instalar Dependências:
 
     source ~/venv/bin/activate
 
     cd /vagrant/web-folder/projeto-SD
     
+    pip install django faker
+
+### 5. Popular o Banco de Dados:
+    python manage.py migrate
+    python popular_bd.py
+
+### 6. Iniciar o Servidor:
+
     python manage.py runserver 0:8000
 
-### 5. Acesse no navegador:
+## 7. Acessar o Sistema:
 
     http://localhost:8000
+
+    Painel Administrativo: http://localhost:8000/admin
 
  Aviso obre a Rede: Para o acesso via localhost:8000 funcione, o arquivo .Vagrantfile da sua maquina virtual precisa ter esta linha de redirecionamento configurada:
     
