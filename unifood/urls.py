@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import RedirectView
 from cantina.views import cadastrar_categoria
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/admin/login/', permanent=False), name='home'),
     path('admin/', admin.site.urls),
     path('categoria/nova/', cadastrar_categoria, name='nova_categoria'),
 ]
