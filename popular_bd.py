@@ -42,7 +42,7 @@ def popular_banco(num_clientes=100, num_pedidos=200):
     for _ in range(num_clientes):
         cli = Cliente.objects.create(
             nome=fake.name(),
-            matricula=fake.unique.numerify(text='202######'),
+            cpf=fake.cpf(),
             email=fake.unique.email()
         )
         clientes.append(cli)

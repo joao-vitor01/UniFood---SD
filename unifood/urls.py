@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from cantina.views import cadastrar_categoria
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('categoria/nova/', cadastrar_categoria, name='nova_categoria'),
 ]
