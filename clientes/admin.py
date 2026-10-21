@@ -3,8 +3,8 @@ from .models import Cliente, Pedido, ItemPedido, Pagamento
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'matricula', 'email')
-    search_fields = ('nome', 'matricula', 'email')
+    list_display = ('nome', 'cpf', 'email')
+    search_fields = ('nome', 'cpf', 'email')
 
 class ItemPedidoInline(admin.TabularInline):
     model = ItemPedido
@@ -18,7 +18,7 @@ class PagamentoInline(admin.StackedInline):
 class PedidoAdmin(admin.ModelAdmin):
     list_display = ('id', 'cliente', 'status', 'codigo_retirada', 'criado_em')
     list_filter = ('status', 'criado_em')
-    search_fields = ('cliente__nome', 'codigo_retirada', 'cliente__matricula')
+    search_fields = ('cliente__nome', 'codigo_retirada', 'cliente__cpf')
     inlines = [ItemPedidoInline, PagamentoInline]
 
 @admin.register(Pagamento)
