@@ -19,6 +19,7 @@ from django.views.generic import RedirectView
 from cantina.views import cadastrar_categoria
 
 urlpatterns = [
+    # Redireciona da visão principal para a de login do admin
     path('', RedirectView.as_view(url='/admin/login/', permanent=False), name='home'),
     path('admin/', admin.site.urls),
     path('categoria/nova/', cadastrar_categoria, name='nova_categoria'),
