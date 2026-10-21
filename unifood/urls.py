@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from cantina.views import cadastrar_categoria, home
+from cantina.views import cadastrar_categoria, home, listar_produtos
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('categoria/nova/', cadastrar_categoria, name='nova_categoria'),
+    path('produtos/', listar_produtos, name='produtos'),
 ]

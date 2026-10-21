@@ -1,37 +1,42 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Categoria - UniFood</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .messages { list-style-type: none; padding: 10px; border-radius: 5px; }
-        .messages li.error { color: #721c24; background-color: #f8d7da; padding: 10px; margin-bottom: 5px;}
-        .messages li.success { color: #155724; background-color: #d4edda; padding: 10px; margin-bottom: 5px;}
-        .form-group { margin-bottom: 15px; }
-    </style>
-</head>
-<body>
-    <a href="{% url 'home' %}">⬅️ Voltar para o Início</a>
-    <h2>Cadastrar Nova Categoria</h2>
-
-    
+{% extends 'cantina/base.html' %}
+{% block title %}Cadastrar Categoria - UniFood{% endblock %}
+{% block home_active %}{% endblock %}
+{% block products_active %}active{% endblock %}
+{% block extra_styles %}
+<style>
+    .category-form { max-width: 640px; padding: 24px; }
+    .category-form p { margin-bottom: 20px; }
+    .category-form label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+    .category-form input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; color: var(--text-main); }
+    .category-form input:focus-visible { outline: 2px solid var(--brand-orange); outline-offset: 2px; }
+    .category-form .btn-action { width: auto; }
+    .back-link { display: inline-block; color: var(--brand-orange); margin-bottom: 20px; }
+    .messages, .errorlist { list-style: none; margin-bottom: 16px; }
+    .messages li { padding: 12px; border-radius: 6px; margin-bottom: 8px; }
+    .messages .success { background: var(--badge-green-bg); color: var(--badge-green-text); }
+    .messages .error { background: #fcece5; color: #9b3010; }
+    .errorlist { color: #9b3010; font-size: 14px; }
+</style>
+{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'home' %}">← Voltar para o Início</a>
+<div class="page-header">
+    <span class="page-title">Gestão de cardápio</span>
+    <h1>Cadastrar Nova Categoria</h1>
+    <p>Adicione uma categoria ao cardápio da cantina.</p>
+</div>
+<div class="card category-form">
     {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
+    <ul class="messages" role="status">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% endif %}
-
-   
     <form method="post" action="">
         {% csrf_token %}
-        <div class="form-group">
-            {{ form.as_p }}
-        </div>
-        <button type="submit">Salvar</button>
+        {{ form.as_p }}
+        <button type="submit" class="btn-action btn-orange">Salvar Categoria</button>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}

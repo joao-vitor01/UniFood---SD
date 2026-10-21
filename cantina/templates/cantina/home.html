@@ -1,54 +1,138 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Início - UniFood</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .messages { list-style-type: none; padding: 10px; border-radius: 5px; }
-        .messages li.success { color: #155724; background-color: #d4edda; padding: 10px; margin-bottom: 15px;}
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .btn { display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; margin-bottom: 20px;}
-        .btn:hover { background-color: #0056b3; }
-    </style>
-</head>
-<body>
-    <h1>Sistema UniFood - Início</h1>
+{% extends 'cantina/base.html' %}
+{% block content %}
+            <div class="page-header">
+                <span class="page-title">Operação em tempo real</span>
+                <h1>Fila de pedidos</h1>
+                <p>Do recebimento à retirada, cada pedido no seu lugar.</p>
+            </div>
 
-    <!-- Exibe a mensagem de sucesso aqui quando voltar do cadastro -->
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+            <div class="kanban-board">
+                
+                <!-- COLUNA: RECEBIDO -->
+                <div class="kanban-col col-recebido">
+                    <div class="col-header">
+                        <span>📥 Recebido</span>
+                        <span class="badge-count">2</span>
+                    </div>
+                    
+                    <!-- Card 1 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Código de Retirada</span>
+                            <span>12:34</span>
+                        </div>
+                        <div class="card-code">A104</div>
+                        <div class="card-client">Ana Souza</div>
+                        <div class="card-items">
+                            1x Coxinha<br>
+                            1x Refrigerante
+                        </div>
+                        <div class="badge-pix">✅ Pagamento Pix Confirmado</div>
+                        <div class="card-footer">
+                            <span>há 1 min</span>
+                            <span class="card-price">R$ 13,00</span>
+                        </div>
+                        <button class="btn-action btn-orange">➡️ Iniciar preparo</button>
+                    </div>
 
-    <!-- O botão que liga as telas! -->
-    <a href="{% url 'nova_categoria' %}" class="btn">+ Nova Categoria</a>
+                     <!-- Card 2 -->
+                     <div class="card">
+                        <div class="card-header">
+                            <span>Código de Retirada</span>
+                            <span>12:35</span>
+                        </div>
+                        <div class="card-code">A105</div>
+                        <div class="card-client">Lucas Oliveira</div>
+                        <div class="card-items">2x Pão de queijo</div>
+                        <div class="badge-pix">✅ Pagamento Pix Confirmado</div>
+                        <div class="card-footer">
+                            <span>agora</span>
+                            <span class="card-price">R$ 10,00</span>
+                        </div>
+                        <button class="btn-action btn-orange">➡️ Iniciar preparo</button>
+                    </div>
+                </div>
 
-    <h2>Categorias Cadastradas</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for categoria in categorias %}
-                <tr>
-                    <td>{{ categoria.id }}</td>
-                    <td>{{ categoria.nome }}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="2">Nenhuma categoria cadastrada ainda.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+                <!-- COLUNA: EM PREPARO -->
+                <div class="kanban-col col-preparo">
+                    <div class="col-header">
+                        <span>🧑‍🍳 Em Preparo</span>
+                        <span class="badge-count">2</span>
+                    </div>
+                    
+                    <!-- Card 3 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Código de Retirada</span>
+                            <span>12:28</span>
+                        </div>
+                        <div class="card-code">A102</div>
+                        <div class="card-client">Beatriz Lima</div>
+                        <div class="card-items">
+                            1x Empada de frango<br>
+                            1x Suco natural
+                        </div>
+                        <div class="badge-pix">✅ Pagamento Pix Confirmado</div>
+                        <div class="card-footer">
+                            <span style="color: #d94e1e;">7 min de preparo</span>
+                            <span class="card-price">R$ 15,00</span>
+                        </div>
+                        <button class="btn-action btn-orange">✔️ Marcar pronto</button>
+                    </div>
+                </div>
+
+                <!-- COLUNA: PRONTO -->
+                <div class="kanban-col col-pronto">
+                    <div class="col-header">
+                        <span>🛍️ Pronto</span>
+                        <span class="badge-count">2</span>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Código de Retirada</span>
+                            <span>12:22</span>
+                        </div>
+                        <div class="card-code">A100</div>
+                        <div class="card-client">Júlia Costa</div>
+                        <div class="card-items">
+                            1x Pão de queijo<br>
+                            1x Café coado
+                        </div>
+                        <div class="badge-pix">✅ Pagamento Pix Confirmado</div>
+                        <div class="card-footer">
+                            <span>pronto às 12:31</span>
+                            <span class="card-price">R$ 9,00</span>
+                        </div>
+                        <button class="btn-action btn-green">✔️ Confirmar entrega</button>
+                    </div>
+                </div>
+
+                <!-- COLUNA: ENTREGUE -->
+                <div class="kanban-col col-entregue">
+                    <div class="col-header">
+                        <span>✅ Entregue</span>
+                        <span class="badge-count">2</span>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="card" style="opacity: 0.7;">
+                        <div class="card-header">
+                            <span>Código de Retirada</span>
+                            <span>12:10</span>
+                        </div>
+                        <div class="card-code" style="color: #888;">A098</div>
+                        <div class="card-client">Mariana Rocha</div>
+                        <div class="card-items">1x Coxinha<br>1x Suco natural</div>
+                        <div class="badge-pix">✅ Pagamento Pix Confirmado</div>
+                        <div class="card-footer">
+                            <span>entregue às 12:21</span>
+                            <span class="card-price">R$ 14,00</span>
+                        </div>
+                        <button class="btn-action btn-disabled">Pedido entregue</button>
+                    </div>
+                </div>
+
+            </div>
+{% endblock %}

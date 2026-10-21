@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UniFood - Fila de Pedidos{% endblock %}</title>
+    <style>
+        /* Estilos Globais e Variáveis de Cores baseadas no design */
+        :root {
+            --brand-orange: #d94e1e;
+            --brand-orange-hover: #b83d15;
+            --text-main: #333;
+            --text-muted: #777;
+            --bg-body: #f8f9fc;
+            --bg-sidebar: #ffffff;
+            
+            /* Cores das Colunas Kanban */
+            --bg-recebido: #fdf5ef;
+            --bg-preparo: #fef7e3;
+            --bg-pronto: #eef8f1;
+            --bg-entregue: #f4f5f7;
+            
+            /* Cores dos Botões */
+            --btn-green: #257845;
+            --btn-green-hover: #1b5c34;
+            --badge-green-bg: #e2f4e8;
+            --badge-green-text: #257845;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: 260px; background-color: var(--bg-sidebar); border-right: 1px solid #eee; display: flex; flex-direction: column; padding: 20px; }
+        .logo { font-size: 24px; font-weight: bold; color: var(--text-main); display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+        .logo span { color: var(--brand-orange); }
+        .campus-info { background: #f4f5f7; padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; }
+        .campus-info strong { display: block; font-size: 14px; }
+        
+        .menu-item { padding: 12px 15px; border-radius: 8px; text-decoration: none; color: var(--text-muted); font-weight: 500; margin-bottom: 5px; display: block; }
+        .menu-item.active { background-color: #fcece5; color: var(--brand-orange); font-weight: 600; }
+        .menu-item:hover:not(.active) { background-color: #f4f5f7; }
+        
+        .status-cantina { margin-top: auto; background: var(--badge-green-bg); color: var(--badge-green-text); padding: 10px; border-radius: 8px; text-align: center; font-size: 14px; font-weight: bold; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* Topbar */
+        .topbar { background: #fff; padding: 15px 30px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .breadcrumb { color: var(--text-muted); font-size: 14px; }
+        .breadcrumb strong { color: var(--text-main); }
+        .user-info { display: flex; align-items: center; gap: 15px; font-size: 14px; }
+        .avatar { width: 35px; height: 35px; background: #fcece5; color: var(--brand-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+        /* Area de Trabalho (Kanban) */
+        .workspace { padding: 30px; flex: 1; overflow-y: auto; }
+        .page-header { margin-bottom: 20px; }
+        .page-title { font-size: 12px; font-weight: bold; color: var(--brand-orange); text-transform: uppercase; letter-spacing: 1px; }
+        .page-header h1 { font-size: 28px; margin: 5px 0; }
+        .page-header p { color: var(--text-muted); font-size: 14px; }
+
+        /* Kanban Board */
+        .kanban-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; height: calc(100% - 100px); }
+        .kanban-col { border-radius: 12px; padding: 15px; display: flex; flex-direction: column; overflow-y: auto; }
+        
+        /* Cores das Colunas */
+        .col-recebido { background-color: var(--bg-recebido); }
+        .col-preparo { background-color: var(--bg-preparo); }
+        .col-pronto { background-color: var(--bg-pronto); }
+        .col-entregue { background-color: var(--bg-entregue); }
+
+        .col-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; }
+        .col-header span { font-size: 16px; display: flex; align-items: center; gap: 8px;}
+        .badge-count { background: #fff; color: var(--text-main); padding: 2px 8px; border-radius: 12px; font-size: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        /* Cards do Pedido */
+        .card { background: #fff; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .card-header { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+        .card-code { font-size: 32px; font-weight: 800; color: var(--text-main); line-height: 1; margin-bottom: 10px; }
+        .card-client { font-weight: 600; font-size: 14px; margin-bottom: 5px; }
+        .card-items { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.4; }
+        .badge-pix { display: inline-block; background: var(--badge-green-bg); color: var(--badge-green-text); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 15px; }
+        
+        .card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); margin-bottom: 15px; }
+        .card-price { font-weight: bold; color: var(--text-main); font-size: 14px; }
+
+        /* Botões de Ação */
+        .btn-action { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; color: #fff; display: flex; justify-content: center; align-items: center; gap: 5px; font-size: 14px; transition: 0.2s; }
+        .btn-orange { background-color: var(--brand-orange); }
+        .btn-orange:hover { background-color: var(--brand-orange-hover); }
+        .btn-green { background-color: var(--btn-green); }
+        .btn-green:hover { background-color: var(--btn-green-hover); }
+        .btn-disabled { background-color: #f4f5f7; color: #999; cursor: not-allowed; border: 1px solid #ddd; }
+    </style>
+    {% block extra_styles %}{% endblock %}
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span>🍔</span> UniFood
+        </div>
+        <div class="campus-info">
+            <strong>Cantina Central</strong>
+            Campus Universitário
+        </div>
+        
+        <nav>
+            <a href="{% url 'home' %}" class="menu-item {% block home_active %}active{% endblock %}">📋 Fila de Pedidos</a>
+            <a href="#" class="menu-item">📦 Estoque Diário</a>
+            <a href="{% url 'produtos' %}" class="menu-item {% block products_active %}{% endblock %}">🍴 Produtos/Categorias</a>
+            <a href="#" class="menu-item">💳 Pagamentos</a>
+        </nav>
+
+        <div class="status-cantina">
+            🟢 Cantina aberta<br>
+            <span style="font-size: 11px; font-weight: normal; color: #555;">Atendimento • 07h às 21h</span>
+        </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+        <header class="topbar">
+            <div class="breadcrumb">Painel da cantina / <strong>Funcionário</strong></div>
+            <div class="user-info">
+                <span>Qua, 21 out 2026</span>
+                <div class="avatar">CS</div>
+                <div>
+                    <strong>Carla Silva</strong><br>
+                    <span style="font-size: 11px; color: #777;">Funcionária da cantina</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="workspace">
+{% block content %}{% endblock %}
+        </section>
+    </main>
+
+</body>
+</html>
