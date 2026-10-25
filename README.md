@@ -68,6 +68,26 @@ Depois que a imagem já foi construída e o banco configurado, você não precis
     ```bash
     docker compose down
     ```
+## Fluxo de Trabalho (Git)
+
+Para mantermos o site no ar sem interrupções e facilitar o desenvolvimento de todos, utilizaremos apenas **duas branches**:
+
+- **`develop`**: Onde **todo mundo trabalha diretamente**. Todas as telas, correções e alterações devem ser feitas e enviadas aqui.
+- **`main`**: Branch de **produção** (conectada ao deploy automático no Render). **Ninguém commita diretamente na `main`**.
+
+---
+
+### Como trabalhar no dia a dia (Passo a Passo)
+
+Sempre que for começar a programar ou adicionar uma funcionalidade:
+
+#### 1. Garantir que está na `develop` e atualizado
+Antes de alterar qualquer código, puxe as últimas alterações feitas pelo grupo:
+
+```bash
+git checkout develop
+git pull origin develop
+```
 
 ## Comandos para rodar com a VM
 

@@ -15,11 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from cantina.views import cadastrar_categoria, home, listar_produtos
+from django.contrib.auth import views as auth_views
+from cantina.views import home, cadastrar_categoria, listar_produtos, avancar_status_pedido
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', home, name='home'),
+    path('pedidos/<int:pedido_id>/avancar/', avancar_status_pedido, name='avancar_status_pedido'),
+
+    #Autenticacao
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
+    #Telas da Cantina
     path('categoria/nova/', cadastrar_categoria, name='nova_categoria'),
     path('produtos/', listar_produtos, name='produtos'),
+
+    #Admin
+    path('admin/', admin.site.urls),
 ]

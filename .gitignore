@@ -13,3 +13,6 @@ Thumbs.db
 .vagrant/
 
 credenciais.txt
+
+db.sqlite3
+staticfiles/
